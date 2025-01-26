@@ -1,16 +1,21 @@
 const express = require("express");
-const {registerController, forgotPasswordController} = require("../controller/authController");
-const {loginController} = require("../controller/authController");
-const {testContrller} = require("../controller/authController");
-const {isAdmin} = require("../middleware/authMiddleware");
-const requiredSignedin = require("../middleware/authMiddleware");
+const {
+  registerController,
+  forgotPasswordController,
+  loginController,
+  testController, // Fixed typo: 'testContrller' to 'testController'
+} = require("../controller/authController");
+const { isAdmin, requiredSignedin } = require("../middleware/authMiddleware"); // Adjusted imports for consistency
+
 const router = express.Router();
+
+// Define routes
 router.post("/register", registerController);
 router.post("/login", loginController);
-router.get("/test",requiredSignedin,isAdmin, testContrller);
+router.get("/test", requiredSignedin, isAdmin, testController);
 router.post("/forgot-password", forgotPasswordController);
-router.post("/user-auth", requiredSignedin, (req, res) => {
-    res.status(200).send({ ok: true });
+router.get("/user-auth", requiredSignedin, (req, res) => {
+  res.status(200).send({ ok: true });
 });
 
 module.exports = router;
