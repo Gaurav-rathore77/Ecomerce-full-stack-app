@@ -5,6 +5,15 @@ import { useAuth } from "../../context/auth";
 
 const Header = () => {
   const [auth, setAuth] = useAuth();
+  const handleLogout = () => {
+    setAuth({
+      ...auth,
+      user: null,
+      token: "",
+    });
+    localStorage.removeItem("auth");
+    toast.success("Logout Successfully");
+  };
   return (
 <nav>
       <div class='w-full py-3 border-b'>
@@ -23,7 +32,33 @@ const Header = () => {
               </>
             ) : (
               <>
-              <NavLink to="/Login">Logout</NavLink>
+              <li className="nav-item dropdown">
+                    <NavLink
+                      // className="nav-link dropdown-toggle"
+                      href="#"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      {auth?.user?.name}
+                    </NavLink>
+                    <ul className="dropdown-menu">
+                      <li>
+                        <NavLink to="/dashboard" className="dropdown-item">
+                          Dashboard
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          onClick={handleLogout}
+                          to="/login"
+                          className="dropdown-item"
+                        >
+                          Logout
+                        </NavLink>
+                      </li>
+                    </ul>
+                  </li>
               
               </>
             )
